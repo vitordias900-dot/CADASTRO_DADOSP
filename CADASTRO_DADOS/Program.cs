@@ -1,6 +1,6 @@
-﻿using System;
+﻿using CADASTRO_DADOS;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Globalization;
 
 namespace Programa
@@ -11,43 +11,41 @@ namespace Programa
         {
             CultureInfo CI = CultureInfo.InvariantCulture;
 
-            List<string> nomes = new List<string>();
-            List<DateTime> datas = new List<DateTime>();
-            List<string> documento = new List<string>();
-            List<string> estadoCivil = new List<string>();
-            List<string> telefone = new List<string>();
-            List<string> endereco = new List<string>();
-            List<char> sexos = new List<char>();
-
+            List<Pessoa> pessoas = new List<Pessoa>();
             char opcao;
 
-            Console.WriteLine("----- CADASTRO -----");
-            Console.WriteLine();
+            Console.WriteLine("----- CADASTRO -----\n");
+
             do
             {
+                Pessoa p = new Pessoa();
+                p.Endereco = new Endereco();
+
                 Console.Write("Nome: ");
-                nomes.Add(Console.ReadLine());
+                p.Nome = Console.ReadLine();
 
                 Console.Write("Data de Nascimento: ");
-                DateTime data = DateTime.Parse(Console.ReadLine());
-                datas.Add(data);
+                p.DataNascimento = DateTime.Parse(Console.ReadLine());
 
                 Console.Write("CPF/RG: ");
-                documento.Add(Console.ReadLine());
+                p.Documento = Console.ReadLine();
 
                 Console.Write("Estado Civil: ");
-                estadoCivil.Add(Console.ReadLine());
+                p.EstadoCivil = Console.ReadLine();
 
-                Console.Write("Digite o Telefone: ");
-                telefone.Add(Console.ReadLine());
+                Console.Write("Telefone: ");
+                p.Telefone = Console.ReadLine();
 
-                Console.Write("Digite o Endereco: ");
-                endereco.Add(Console.ReadLine());
+                Console.Write("Email: ");
+                p.Email = Console.ReadLine();
 
+                Console.Write("Sexo (M/F): ");
+                p.Sexo = char.Parse(Console.ReadLine().ToUpper());
 
-                Console.Write("Digite o sexo (M/F): ");
-                sexos.Add(char.Parse(Console.ReadLine()));
+                // chama o método do endereço
+                p.Endereco.LerEndereco();
 
+                pessoas.Add(p);
 
                 Console.Write("\nDeseja cadastrar outra pessoa? (s/n): ");
                 opcao = char.Parse(Console.ReadLine().ToLower());
@@ -56,22 +54,21 @@ namespace Programa
 
             } while (opcao == 's');
 
-            Console.WriteLine("---- CADASTROS REALIZADOS ----\n");
+            Console.WriteLine("\n---- CADASTROS REALIZADOS ----\n");
 
-            for (int i = 0; i < nomes.Count; i++)
+            foreach (Pessoa p in pessoas)
             {
                 Console.WriteLine("----------------------------");
-                Console.WriteLine($"Nome: {nomes[i]}");
-                Console.WriteLine($"Data de Nascimento: {datas[i].ToString("dd/MM/yyyy")}");
-                Console.WriteLine($"CPF/RG: {documento[i]}");
-                Console.WriteLine($"Estado Civil: {estadoCivil[i]}");
-                Console.WriteLine($"Telefone: {telefone[i]}");
-                Console.WriteLine($"Endereco: {endereco[i]}");
-                Console.WriteLine($"Sexo: {sexos[i]}");
+                Console.WriteLine($"Nome: {p.Nome}");
+                Console.WriteLine($"Nascimento: {p.DataNascimento:dd/MM/yyyy}");
+                Console.WriteLine($"CPF/RG: {p.Documento}");
+                Console.WriteLine($"Estado Civil: {p.EstadoCivil}");
+                Console.WriteLine($"Telefone: {p.Telefone}");
+                Console.WriteLine($"Email: {p.Email}");
+                Console.WriteLine($"Sexo: {p.Sexo}");
+                Console.WriteLine($"Endereço: {p.Endereco.Tipo} {p.Endereco.Nome}, Nº {p.Endereco.Numero}");
                 Console.WriteLine();
             }
-
         }
     }
-    
 }
